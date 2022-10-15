@@ -1,0 +1,134 @@
+Q1
+
+
+#EDA(Exploratory Data Analysis) of NewYork City 2019
+
+#Libraries for Data Analysis & Wrangling
+
+#pandas is a fast, powerful, flexible and easy to use open source data analysis and manipulation tool, built on top of the Python programming language.
+import pandas as pd
+
+#NumPy is a library for the Python programming language, adding support for large, multi-dimensional arrays and matrices, along with a large collection of high-level mathematical functions to operate on these arrays.
+import numpy as np
+
+#Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python.
+import matplotlib.pyplot as plt
+%matplotlib inline #%matplotlib inline sets the backend of matplotlib to the 'inline' backend
+
+#Seaborn is a library for making statistical graphics in Python
+import seaborn as sns
+
+#The OS module in python provides functions for interacting with the operating system.
+import os
+
+#importing csv file using pandas and read_csv command.
+nyc_data = pd.read_csv('E:\AB_NYC_2019.csv')
+
+
+#head() method is used to print top 5 rows & tail() method is used to print last 5 row
+nyc_data.head(10).append(nyc_data.tail())
+
+
+
+
+
+
+Q2
+
+
+#printing the dataset
+print(nyc_data)
+
+
+Q3
+
+
+#printing the information of the NYC dataset using info() method
+print(nyc_data.info())
+
+
+Q4
+
+
+#getting dataypes using dtypes() method
+print(nyc_data.dtypes)
+
+
+Q5
+
+
+#statistics of the given dataest
+# we use describe() method
+
+print(nyc_data.describe())
+
+
+Q6
+
+
+#finding null values using isnull() method
+print(nyc_data.isnull())
+
+
+Q7
+
+
+#calculating the total null values dataset
+print(nyc_data.isnull().sum())
+
+#we've seen that there're 16 null values in names, 21 null values in host_name, 10052 null values in last_review & reviews_per_month
+
+
+Q8
+
+
+#Data cleaning
+
+missing_values = nyc_data.isnull().sum().sort_values(ascending=False)
+
+percentage_missing_values = round((nyc_data.isnull().sum()/nyc_data.isnull().sum().sum()).sort_values(ascending=False),3)
+
+null_in_data = pd.concat([missing_values, percentage_missing_values],keys=['Missing values','Percentage'],axis=1)
+null_in_data.head()
+
+#as we see that both reviews_per_month & last_review have same missing values.
+
+
+
+
+Q9
+
+
+#bar plot for missing values(reviews_per_month, last_review) using barplot() method
+
+plt.figure(figsize=(10,5))
+missing_plot = sns.barplot(x=missing_values.index[0:4],y=missing_values[0:4],palette='bright')
+missing_plot.set_xticklabels(missing_plot.get_xticklabels(),rotation=0)
+plt.title('Missing values in dataset.')
+plt.show()
+
+
+
+Q10
+
+
+nyc_data.drop(['id','host_name','last_review'], axis=1, inplace=True)
+nyc_data
+
+
+Q11
+
+
+#replacing all NaN values in 'reviews_per_month' with 0
+nyc_data.fillna({'reviews_per_month':0}, inplace=True)
+
+nyc_data.reviews_per_month.isnull().sum()
+
+
+Q12
+
+
+print(nyc_data['reviews_per_month'].tail(20))
+
+
+
